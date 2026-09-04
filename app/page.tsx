@@ -32,13 +32,14 @@ export default function Home() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const data = Object.fromEntries(new FormData(event.currentTarget))
+    const form = event.currentTarget
+    const data = Object.fromEntries(new FormData(form))
     setStatus('sending')
     try {
       const response = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
       if (!response.ok) throw new Error('Request failed')
       setStatus('sent')
-      event.currentTarget.reset()
+      form.reset()
     } catch {
       setStatus('error')
     }
